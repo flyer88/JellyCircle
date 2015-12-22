@@ -107,11 +107,11 @@ public class CircleIndicator extends View{
                 mStartCircle.setRadius((float) (dpToPx(mDefaultMaxRadius,getResources()) - distance / dpToPx( mMaxDistance ,getResources()) * dpToPx(mDefaultMaxRadius - mDefaultMinRadius,getResources())));
                 mCanDrawBezier = calculatePoint(mStartCircle,mEndCircle);
                 invalidate();
-                if (mCurrentDistance >= dpToPx(mMaxDistance,getResources())){
-                    if (mOnTouchMoveListener != null){
-                        mOnTouchMoveListener.onOutOfEdgeDown();
-                    }
-                }
+//                if (mCurrentDistance >= dpToPx(mMaxDistance,getResources())){
+//                    if (mOnTouchMoveListener != null){
+//                        mOnTouchMoveListener.onOutOfEdgeDown();
+//                    }
+//                }
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -290,7 +290,7 @@ public class CircleIndicator extends View{
 
     public interface CircleOnTouchMoveListener{
         public void onOutOfEdgeUp();
-        public void onOutOfEdgeDown();
+//        public void onOutOfEdgeDown();
     }
 
 

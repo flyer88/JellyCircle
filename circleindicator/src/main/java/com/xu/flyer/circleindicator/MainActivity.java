@@ -18,9 +18,6 @@ public class MainActivity extends AppCompatActivity {
     CircleIndicator mIndicator;
     SeekBar mSeekBar;
 
-    ListView mListView;
-    List mList = new ArrayList();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"拉出边界了,手指离开屏幕",Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onOutOfEdgeDown() {
-                Toast.makeText(MainActivity.this,"拉出边界了,手指未离开屏幕",Toast.LENGTH_SHORT).show();
-            }
         });
 
         mStart.setOnClickListener(new View.OnClickListener() {
