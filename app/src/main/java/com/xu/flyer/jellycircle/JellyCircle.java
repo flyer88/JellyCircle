@@ -6,7 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+
+import com.xu.flyer.jellycircle.common.Util;
 
 import java.util.List;
 
@@ -68,17 +71,63 @@ public class JellyCircle extends View{
         mBezierPath = new Path();
         mCurrentCircle = new Circle();
         mBezierPaint.setColor(Color.BLACK);
+        mBezierPaint.setAntiAlias(true);
     }
 
 
+    double mDefaultDT = 0.05;
+    public double calculateOffset(double x){
+        return 1 - ((double)Math.pow(Math.E, -5 * x)) * ((double) Math.cos(30 * x));
+    }
 
-    public void moveJellyCircle(int position,float offset){
+    /**
+     *
+     * @param offset 偏移量
+     * @param withBlock 是否有反弹效果
+     */
+    public void changeJellyCircleWithOffset(float offset,boolean withBlock,float blockValue){
+        if (withBlock){
+            if (offset > blockValue) {
+                Log.e("Jelly circle","block value: " + calculateOffset(mDefaultDT));
+                Log.e("Jelly circle","default dt value: " + mDefaultDT);
+                if ((calculateOffset(mDefaultDT) -1) < 0.02){
+                    return;
+                } else {
+//                    changeJellyCircleWithOffset((float) calculateOffset(mDefaultDT));
+                    mDefaultDT = mDefaultDT + 0.05;
+                    if (mDefaultDT > 1){
+                        return;
+                    }
+                    changeJellyCircleWithOffset(offset,withBlock,blockValue);
+                }
+
+            } else {
+                changeJellyCircleWithOffset(offset);
+            }
+        } else {
+            changeJellyCircleWithOffset(offset);
+        }
+    }
+
+
+    /**
+     * 对 circle 进行变形
+     * @param offset 变形的量
+     */
+    public void changeJellyCircleWithOffset(float offset){
         float offValue = Util.dpToPx(offset * (mMaxRadius - mMinRadius),getResources());
         mCurrentCircle.setXRadius(mCurrentCircle.getRadius() + offValue);
         mCurrentCircle.setYRadius(mCurrentCircle.getRadius() - offValue);
         calculateArc();
         invalidate();
     }
+
+    public void setCurrentCircle(Circle circle){
+        this.mCurrentCircle = circle;
+        calculateArc();
+        invalidate();
+    }
+
 
     public void initCircles(List<Circle> Circles){
         this.mCircles = Circles;

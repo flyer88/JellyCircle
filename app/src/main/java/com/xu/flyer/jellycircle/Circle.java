@@ -2,6 +2,8 @@ package com.xu.flyer.jellycircle;
 
 import android.content.Context;
 
+import com.xu.flyer.jellycircle.common.Util;
+
 /**
  * Created by flyer on 15/11/5.
  */

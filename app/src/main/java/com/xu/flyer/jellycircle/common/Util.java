@@ -1,4 +1,4 @@
-package com.xu.flyer.jellycircle;
+package com.xu.flyer.jellycircle.common;
 
 import android.content.res.Resources;
 import android.util.TypedValue;
