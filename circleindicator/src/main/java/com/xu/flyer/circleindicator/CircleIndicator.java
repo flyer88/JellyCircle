@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -70,6 +71,7 @@ public class CircleIndicator extends View{
     public void initDefaultValue(){
         mBezierPath = new Path();
         mBezierPaint = new Paint();
+        mBezierPaint.setAntiAlias(true);
         mStartCircle = new Circle();
         mEndCircle = new Circle();
 
@@ -155,10 +157,13 @@ public class CircleIndicator extends View{
         float startY = startCircle.getY();
         float endX = endCircle.getX();
         float endY = endCircle.getY();
+
         mCurrentDistance = (float) Math.sqrt(((startX - endX) * (startX - endX)) + ((startY - endY) * (startY - endY)));
         if (mCurrentDistance == 0f){
             return false;
         }
+
+
         float cos = (endY - startY) / mCurrentDistance;
         float sin = (endX - startX) / mCurrentDistance;
 
@@ -175,12 +180,19 @@ public class CircleIndicator extends View{
         float yD = endY + endCircle.getRadius() * sin;
         mEndD = new Point(xD,yD);
 
+        /**
+         * 控制点和H点重合
+         */
+//        mControlPointO = new Point((startX + endX )/ 2,(startY + endY) /2);
+//        mControlPointP = new Point((startX + endX )/ 2,(startY + endY) /2);
 
-
+        /**
+         * 控制点为小圆切线，同时和小圆切点的距离，是两个圆的圆心距离的一半
+         */
         float controlOX = xA + mCurrentDistance /2 * sin;
         float controlOY = yA + mCurrentDistance /2 * cos;
         mControlPointO = new Point(controlOX,controlOY);
-        float controlPX = xB + mCurrentDistance / 2 * sin;
+        float controlPX = xB + mCurrentDistance /2 * sin;
         float controlPY = yB + mCurrentDistance /2 * cos;
         mControlPointP = new Point(controlPX,controlPY);
 
@@ -223,7 +235,7 @@ public class CircleIndicator extends View{
      * @param offset
      */
     public void moveCircleByOffset(float offset){//开始移动时，y值不变，x值开始根据偏移量变化
-        mEndCircle.setX(dpToPx(mDefaultFirstX + mMaxDistance * offset,getResources()));
+        mEndCircle.setX(dpToPx(mDefaultFirstX + mMaxDistance * offset,getResources()));//修改endCircle的位置
         mEndCircle.setRadius(dpToPx(mDefaultMinRadius,getResources()) + offset * dpToPx(mDefaultMaxRadius - mDefaultMinRadius,getResources()));//EndCircle半径变大
         mStartCircle.setRadius(dpToPx(mDefaultMaxRadius,getResources()) - offset * dpToPx(mDefaultMaxRadius - mDefaultMinRadius,getResources()));//StartCircle半径变小
         mCanDrawBezier = calculatePoint(mStartCircle, mEndCircle);
