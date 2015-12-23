@@ -213,7 +213,7 @@ public class CircleIndicator extends View{
     }
 
     /**
-     * 设置初始位置
+     * 设置默认初始位置
      * @param x
      * @param y
      */
@@ -231,6 +231,7 @@ public class CircleIndicator extends View{
 
 
     /**
+     * 每设置一个值，就刷新一次圆的状态
      * 通过偏移量来移动
      * @param offset
      */
